@@ -36,13 +36,14 @@
             <!-- ปุ่มกดสไตล์เกม -->
             <div class="menu-buttons">
                 <button class="pixel-btn btn-start">▶ START GAME</button>
-                <button class="pixel-btn btn-about">★ ABOUT ME</button>
+                <!-- แก้ไขตรงนี้: เพิ่ม id="about-btn" ให้ถูกต้อง -->
+                <button id="about-btn" class="pixel-btn btn-about">★ ABOUT ME</button>
             </div>
         </main>
     </div>
 
 <!-- ============================ -->
-<!-- หน้าต่างป๊อปอัป (Popup Modal) -->
+<!-- หน้าต่างป๊อปอัป START GAME -->
     <div id="game-popup" class="popup-overlay">
         <div class="popup-box">
             <h2>GAME STARTED!</h2>
@@ -51,9 +52,21 @@
         </div>
     </div>
 
-    <!-- ========================== -->
-     <!-- ตัวเชื่อม -->
-     <script src="script.js"></script>
+<!-- ================================= -->
+<!-- หน้าต่างป๊อปอัป ABOUT ME -->
+    <div id="about-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>★ ABOUT ME</h2>
+            <p><strong>สถานะ:</strong> นักผจญภัยสาย Web Developer 💻</p>
+            <p><strong>Skills:</strong> HTML5, CSS3, JavaScript</p>
+            <p><strong>เป้าหมาย:</strong> สร้างพอร์ตฟิโอสุดเท่สไตล์ 8-Bit และเผยแพร่ผ่าน GitHub Pages!</p>
+            <!-- แก้ไขตรงนี้: เปลี่ยนเป็น id="close-about" ให้ตรงกับใน script.js -->
+            <button id="close-about" class="pixel-btn btn-about">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- ตัวเชื่อม JavaScript -->
+    <script src="script.js"></script>
 
 </body>
 </html>
