@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Adventure</title>
+    <!-- ดึงฟอนต์สไตล์พิกเซลจาก Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-screen">
+        <!-- แถบสถานะด้านบนสไตล์เกม RPG -->
+        <header class="hud">
+            <span>HP: ██████████ 100/100</span>
+            <span>LV. 01</span>
+            <span>GOLD: 500G</span>
+        </header>
+
+        <!-- กล่องเนื้อหาหลัก -->
+        <main class="dialog-box">
+            <h1>MY PIXEL WORLD</h1>
+            <p class="subtitle">WELCOME, ADVENTURER!</p>
+            
+            <!-- เอารูปแมวของคุณมาใส่ตรงนี้ได้ครับ -->
+            <div class="avatar-frame">
+                <img src="images/Cat-Memes-30.jpg" alt="Hero Cat">
+            </div>
+
+            <p class="story-text">
+                > สวัสดีผู้กล้า! นี่คือหน้าเว็บไซต์แรกในโลก 8-Bit ของฉัน<br>
+                > เลือกคำสั่งด้านล่างเพื่อเริ่มต้นการเดินทาง...
+            </p>
+
+            <!-- ปุ่มกดสไตล์เกม -->
+            <div class="menu-buttons">
+                <button class="pixel-btn btn-start">▶ START GAME</button>
+                <button class="pixel-btn btn-about">★ ABOUT ME</button>
+            </div>
+        </main>
+    </div>
+
+<!-- ============================ -->
+<!-- หน้าต่างป๊อปอัป (Popup Modal) -->
+    <div id="game-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>GAME STARTED!</h2>
+            <p>ยินดีต้อนรับสู่การผจญภัยระดับ Legend ขอให้สนุกกับการเดินทาง!</p>
+            <button id="close-popup" class="pixel-btn btn-start">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- ========================== -->
+     <!-- ตัวเชื่อม -->
+     <script src="script.js"></script>
+
+</body>
+</html>

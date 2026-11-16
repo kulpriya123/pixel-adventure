@@ -1,0 +1,169 @@
+/* ตั้งค่าพื้นฐานและพื้นหลัง */
+body {
+    background-color: #1a1c2c; /* สีกรมท่าเข้มแบบเกมยุคเก่า */
+    color: #f4f4f4;
+    font-family: 'Press Start 2P', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* กรอบหน้าจอเกม */
+.game-screen {
+    width: 90%;
+    max-width: 650px;
+}
+
+/* แถบพลังชีวิตด้านบน */
+.hud {
+    background-color: #29366f;
+    border: 4px solid #ffffff;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    box-shadow: 6px 6px 0px #000000; /* เงาแข็งแบบพิกเซล */
+}
+
+/* กล่องข้อความ RPG */
+.dialog-box {
+    background-color: #333c57;
+    border: 4px solid #ffffff;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 8px 8px 0px #000000;
+}
+
+h1 {
+    color: #ffcd75; /* สีเหลืองทอง */
+    font-size: 24px;
+    text-shadow: 4px 4px 0px #b13e53; /* เงาตัวหนังสือ */
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #38b764; /* สีเขียวสด */
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+/* กรอบรูปภาพตัวละคร */
+.avatar-frame {
+    display: inline-block;
+    border: 4px solid #ffcd75;
+    padding: 4px;
+    background-color: #1a1c2c;
+    box-shadow: 4px 4px 0px #000000;
+    margin-bottom: 20px;
+}
+
+.avatar-frame img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated; /* ทำให้ภาพดูคมชัดแบบพิกเซล */
+}
+
+.story-text {
+    font-family: sans-serif; /* ใช้ฟอนต์อ่านง่ายสำหรับภาษาไทย */
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: #1a1c2c;
+    border: 2px solid #566c86;
+    padding: 15px;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+/* ปุ่มกดสไตล์ 8-Bit */
+.menu-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.pixel-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    padding: 15px 20px;
+    border: 4px solid #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000000;
+    transition: transform 0.1s;
+}
+
+.btn-start {
+    background-color: #e43b44; /* สีแดง */
+}
+
+.btn-about {
+    background-color: #3b5dc9; /* สีน้ำเงิน */
+}
+
+/* เอฟเฟกต์ตอนเอาเมาส์ชี้และกดปุ่ม */
+.pixel-btn:hover {
+    filter: brightness(1.15);
+}
+
+.pixel-btn:active {
+    transform: translate(4px, 4px); /* ยุบตัวลงเหมือนกดปุ่มจริง */
+    box-shadow: 0px 0px 0px #000000;
+}
+
+/* =============================== */
+/* เปลี่ยนเคอร์เซอร์ทั้งหน้าเว็บ และกำหนดจุดคลิก (ตัวเลข 2 2 คือพิกัด X และ Y จากมุมซ้ายบนของรูป) */
+body {
+    cursor: url('images/sword.png') 2 2, auto;
+}
+
+/* ทำให้เวลาเอาเมาส์ไปชี้ที่ปุ่ม (Button) ยังคงเป็นรูปดาบอยู่ */
+/* เปลี่ยนเคอร์เซอร์เมื่อเอาเมาส์ไปชี้ที่ปุ่ม */
+.pixel-btn:hover {
+    cursor: url('images/boom.png') 2 2, pointer;
+}
+
+/* =========================== */
+/* พื้นหลังมืดที่จะคลุมหน้าจอตอนป๊อปอัปแสดงขึ้นมา */
+.popup-overlay {
+    display: none; /* ซ่อนไว้ก่อนโดยค่าเริ่มต้น */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 28, 44, 0.85); /* สีมืดแบบโปร่งแสง */
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* ให้แสดงทับทุกอย่างบนหน้าจอ */
+}
+
+/* กล่องป๊อปอัปสไตล์เกม RPG */
+.popup-box {
+    background-color: #333c57;
+    border: 4px solid #ffffff;
+    padding: 30px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 8px 8px 0px #000000;
+}
+
+.popup-box h2 {
+    color: #ffcd75;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 0px #b13e53;
+}
+
+.popup-box p {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #f4f4f4;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
