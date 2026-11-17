@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Adventure</title>
+    <title>Kulpriya - Pixel Portfolio</title>
     <!-- ดึงฟอนต์สไตล์พิกเซลจาก Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -12,60 +12,170 @@
 
     <div class="game-screen">
         <!-- แถบสถานะด้านบนสไตล์เกม RPG -->
+        <!-- แถบสถานะด้านบนสไตล์เกม RPG (เพิ่ม id เพื่ออัปเดตค่าได้จริง) -->
+        <!-- แถบสถานะด้านบนสไตล์เกม RPG (เพิ่มปุ่มสลับธีมกลางวัน/กลางคืน) -->
         <header class="hud">
             <span>HP: ██████████ 100/100</span>
-            <span>LV. 01</span>
-            <span>GOLD: 500G</span>
+            <span id="hud-level">LV. 01</span>
+            <span id="hud-gold">GOLD: 500G</span>
+            <button id="theme-btn" class="theme-toggle-btn">☀️ SUNNY</button>
         </header>
 
         <!-- กล่องเนื้อหาหลัก -->
         <main class="dialog-box">
-            <h1>MY PIXEL WORLD</h1>
-            <p class="subtitle">WELCOME, ADVENTURER!</p>
+            <h1>KULPRIYA</h1>
+            <p class="subtitle">VIRTUAL ASSISTANT & WEB DEVELOPER</p>
             
-            <!-- เอารูปแมวของคุณมาใส่ตรงนี้ได้ครับ -->
+            <!-- รูปโปรไฟล์/อวตาร -->
             <div class="avatar-frame">
                 <img src="images/Cat-Memes-30.jpg" alt="Hero Cat">
             </div>
 
-            <p class="story-text">
-                > สวัสดีผู้กล้า! นี่คือหน้าเว็บไซต์แรกในโลก 8-Bit ของฉัน<br>
-                > เลือกคำสั่งด้านล่างเพื่อเริ่มต้นการเดินทาง...
+            <!-- กล่องข้อความต้อนรับ (จะถูกพิมพ์อัตโนมัติด้วย JS) -->
+            <p id="typewriter-text" class="story-text"></p>
+                 <br>
             </p>
 
-            <!-- ปุ่มกดสไตล์เกม -->
+            <!-- ปุ่มกดสไตล์เกม (ตกแต่งสีครบเซต) -->
             <div class="menu-buttons">
                 <button class="pixel-btn btn-start">▶ START GAME</button>
-                <!-- แก้ไขตรงนี้: เพิ่ม id="about-btn" ให้ถูกต้อง -->
                 <button id="about-btn" class="pixel-btn btn-about">★ ABOUT ME</button>
+                <button id="edu-btn" class="pixel-btn btn-edu">🎓 การศึกษา</button>
+                <button id="skills-btn" class="pixel-btn btn-skills">⚡ ทักษะ</button>
+                <button id="projects-btn" class="pixel-btn btn-projects">📁 ผลงาน</button>
+                <button id="chat-btn" class="pixel-btn btn-chat">💬 แชทกับเลขา</button>
             </div>
         </main>
     </div>
 
-<!-- ============================ -->
-<!-- หน้าต่างป๊อปอัป START GAME -->
+    <!-- ============================ -->
+    <!-- 1. ป๊อปอัป START GAME (สุ่มไอเทมลับ) -->
     <div id="game-popup" class="popup-overlay">
         <div class="popup-box">
-            <h2>GAME STARTED!</h2>
-            <p>ยินดีต้อนรับสู่การผจญภัยระดับ Legend ขอให้สนุกกับการเดินทาง!</p>
+            <h2>🎁 TREASURE FOUND!</h2>
+            <p id="game-result">กำลังเปิดกล่องสมบัติ...</p>
             <button id="close-popup" class="pixel-btn btn-start">CLOSE</button>
         </div>
     </div>
 
-<!-- ================================= -->
-<!-- หน้าต่างป๊อปอัป ABOUT ME -->
+    <!-- 2. ป๊อปอัป ABOUT ME & CONTACT (อัปเกรดใหม่) -->
     <div id="about-popup" class="popup-overlay">
-        <div class="popup-box">
-            <h2>★ ABOUT ME</h2>
-            <p><strong>สถานะ:</strong> นักผจญภัยสาย Web Developer 💻</p>
-            <p><strong>Skills:</strong> HTML5, CSS3, JavaScript</p>
-            <p><strong>เป้าหมาย:</strong> สร้างพอร์ตฟิโอสุดเท่สไตล์ 8-Bit และเผยแพร่ผ่าน GitHub Pages!</p>
-            <!-- แก้ไขตรงนี้: เปลี่ยนเป็น id="close-about" ให้ตรงกับใน script.js -->
-            <button id="close-about" class="pixel-btn btn-about">CLOSE</button>
+        <div class="popup-box about-box-wide">
+            <h2>★ ABOUT ME & CONTACT</h2>
+            <p><strong>ชื่อ:</strong> Kulpriya</p>
+            <p><strong>สถานะ:</strong> นักพัฒนาเว็บและผู้สร้างพอร์ตฟิโอ 8-Bit 💻</p>
+            
+            <hr class="pixel-divider">
+            <p style="margin-bottom: 10px;"><strong>ช่องทางการติดต่อ:</strong></p>
+
+            <!-- แถวบน: GitHub และ ปุ่มเปิดหน้าต่างอีเมล -->
+            <div class="contact-row-main">
+                <a href="https://github.com/kulpriya123" target="_blank" class="contact-btn btn-github">
+                    🐱 GitHub
+                </a>
+                <button id="open-email-modal-btn" class="contact-btn btn-email-trigger">
+                    ✉️ ส่งอีเมลติดต่อ
+                </button>
+            </div>
+
+            <!-- แถวล่าง: Facebook, Instagram, LINE -->
+            <div class="contact-row-social">
+                <a href="https://facebook.com" target="_blank" class="contact-btn btn-social">
+                    📘 Facebook
+                </a>
+                <a href="https://instagram.com" target="_blank" class="contact-btn btn-social">
+                    📸 Instagram
+                </a>
+                <a href="https://line.me" target="_blank" class="contact-btn btn-social">
+                    💬 LINE
+                </a>
+            </div>
+
+            <button id="close-about" class="pixel-btn btn-about" style="margin-top: 15px;">CLOSE</button>
         </div>
     </div>
 
-    <!-- ตัวเชื่อม JavaScript -->
+    <!-- 2.1 ป๊อปอัปย่อย: ติดต่อทางอีเมล (เด้งเมื่อกด "ส่งอีเมลติดต่อ") -->
+    <div id="email-popup" class="popup-overlay" style="z-index: 1100;">
+        <div class="popup-box email-modal-box">
+            <div class="email-modal-header">
+                <h2>✉️ ติดต่อทางอีเมล</h2>
+                <button id="close-email-x" class="close-x-btn">✖</button>
+            </div>
+            
+            <p class="email-desc">สามารถคัดลอกที่อยู่อีเมลด้านล่าง หรือเลือกเปิดผ่านเว็บ Gmail ได้เลยค่ะ</p>
+
+            <!-- กล่องแสดงอีเมล + ปุ่มคัดลอก -->
+            <div class="email-copy-box">
+                <span id="email-address-text">kulpriya.waga@bumail.net</span>
+                <button id="copy-email-btn" class="copy-btn">คัดลอก</button>
+            </div>
+
+            <!-- ปุ่มเปิดเขียนข้อความใน Gmail (บนเว็บ) -->
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kulpriya.waga@bumail.net" target="_blank" class="email-action-btn">
+                ↗ เปิดเขียนข้อความใน Gmail (บนเว็บ)
+            </a>
+
+            <!-- ปุ่มเปิดผ่านแอปอีเมลในเครื่อง -->
+            <a href="mailto:kulpriya.waga@bumail.net" class="email-action-btn">
+                ✉️ เปิดผ่านแอปอีเมลในเครื่อง
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. ป๊อปอัป การศึกษา -->
+    <div id="edu-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>🎓 การศึกษา</h2>
+            <p><strong>สถานะ:</strong> กำลังศึกษาและพัฒนาทักษะด้าน Web Development</p>
+            <p><strong>ความสนใจ:</strong> การสร้างเว็บไซต์สไตล์เรโทรและเทคโนโลยีปัญญาประดิษฐ์</p>
+            <button id="close-edu" class="pixel-btn btn-edu">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 4. ป๊อปอัป ทักษะ -->
+    <div id="skills-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>⚡ ทักษะความสามารถ</h2>
+            <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript</p>
+            <p><strong>Tools:</strong> VS Code, Git & GitHub Pages</p>
+            <button id="close-skills" class="pixel-btn btn-skills">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 5. ป๊อปอัป ผลงาน -->
+    <div id="projects-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>📁 ผลงานที่ผ่านมา</h2>
+            <p><strong>Pixel Adventure Portfolio:</strong> เว็บพอร์ตฟิโอเกม 8-Bit สุดเท่ที่สร้างขึ้นจากศูนย์</p>
+            <button id="close-projects" class="pixel-btn btn-projects">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- 6. ป๊อปอัป แชทกับเลขา (Interactive Chat ตัวใหม่ตัวเดียว) -->
+    <div id="chat-popup" class="popup-overlay">
+        <div class="popup-box chat-box-container">
+            <h2>💬 แชทกับเลขาฯ ส่วนตัว</h2>
+            
+            <!-- หน้าต่างแสดงประวัติการสนทนา -->
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-msg bot-msg">
+                    <strong>เลขาฯ:</strong> สวัสดีค่ะคุณผู้กล้า! เลือกหัวข้อคำถามด้านล่างเพื่อพูดคุยกับฉันได้เลยนะคะ ✨
+                </div>
+            </div>
+
+            <!-- ปุ่มคำถามที่มีให้ผู้เล่นเลือกกด -->
+            <div class="chat-options">
+                <button class="chat-option-btn" data-q="skills">⚡ ทักษะหลักของคุณ Kulpriya คือด้านไหน?</button>
+                <button class="chat-option-btn" data-q="goal">🎯 เป้าหมายในการสร้างเว็บไซต์นี้คืออะไร?</button>
+                <button class="chat-option-btn" data-q="contact">📬 ช่องทางการติดต่อมีอะไรบ้าง?</button>
+            </div>
+
+            <button id="close-chat" class="pixel-btn btn-chat" style="display: block; margin: 10px auto 0;">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- ตัวเชื่อม JavaScript (ต้องอยู่ล่างสุดเสมอ) -->
     <script src="script.js"></script>
 
 </body>
