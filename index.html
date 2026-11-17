@@ -24,11 +24,11 @@
         <!-- กล่องเนื้อหาหลัก -->
         <main class="dialog-box">
             <h1>KULPRIYA</h1>
-            <p class="subtitle">VIRTUAL ASSISTANT & WEB DEVELOPER</p>
+            <p class="subtitle">AI & WEB DEVELOPER</p>
             
             <!-- รูปโปรไฟล์/อวตาร -->
             <div class="avatar-frame">
-                <img src="images/Cat-Memes-30.jpg" alt="Hero Cat">
+                <img src="images/im_1.jpg" alt="Hero Cat">
             </div>
 
             <!-- กล่องข้อความต้อนรับ (จะถูกพิมพ์อัตโนมัติด้วย JS) -->
@@ -43,7 +43,7 @@
                 <button id="edu-btn" class="pixel-btn btn-edu">🎓 การศึกษา</button>
                 <button id="skills-btn" class="pixel-btn btn-skills">⚡ ทักษะ</button>
                 <button id="projects-btn" class="pixel-btn btn-projects">📁 ผลงาน</button>
-                <button id="chat-btn" class="pixel-btn btn-chat">💬 แชทกับเลขา</button>
+                <button id="chat-btn" class="pixel-btn btn-chat">💬 แชทกับอัศวิน</button>
             </div>
         </main>
     </div>
@@ -58,44 +58,54 @@
         </div>
     </div>
 
-    <!-- 2. ป๊อปอัป ABOUT ME & CONTACT (อัปเกรดใหม่) -->
+    <!-- 2. ป๊อปอัป ABOUT ME & CONTACT -->
     <div id="about-popup" class="popup-overlay">
         <div class="popup-box about-box-wide">
             <h2>★ ABOUT ME & CONTACT</h2>
-            <p><strong>ชื่อ:</strong> Kulpriya</p>
-            <p><strong>สถานะ:</strong> นักพัฒนาเว็บและผู้สร้างพอร์ตฟิโอ 8-Bit 💻</p>
+            <p><strong>ชื่อ:</strong> Kulpriya Wagayabun</p>
+            <p><strong>สถานะ:</strong> นักพัฒนาเว็บและผู้สร้างPortfolio 8-Bit 💻</p>
             
             <hr class="pixel-divider">
             <p style="margin-bottom: 10px;"><strong>ช่องทางการติดต่อ:</strong></p>
 
-            <!-- แถวบน: GitHub และ ปุ่มเปิดหน้าต่างอีเมล -->
+            <!-- ปุ่มติดต่อหลัก: Email และ LINE (เปลี่ยนเป็นปุ่มเปิดป๊อปอัปสแกน QR) -->
             <div class="contact-row-main">
-                <a href="https://github.com/kulpriya123" target="_blank" class="contact-btn btn-github">
-                    🐱 GitHub
-                </a>
                 <button id="open-email-modal-btn" class="contact-btn btn-email-trigger">
                     ✉️ ส่งอีเมลติดต่อ
                 </button>
-            </div>
-
-            <!-- แถวล่าง: Facebook, Instagram, LINE -->
-            <div class="contact-row-social">
-                <a href="https://facebook.com" target="_blank" class="contact-btn btn-social">
-                    📘 Facebook
-                </a>
-                <a href="https://instagram.com" target="_blank" class="contact-btn btn-social">
-                    📸 Instagram
-                </a>
-                <a href="https://line.me" target="_blank" class="contact-btn btn-social">
+                <button id="open-line-modal-btn" class="contact-btn btn-line-trigger">
                     💬 LINE
-                </a>
+                </button>
             </div>
 
             <button id="close-about" class="pixel-btn btn-about" style="margin-top: 15px;">CLOSE</button>
         </div>
     </div>
 
-    <!-- 2.1 ป๊อปอัปย่อย: ติดต่อทางอีเมล (เด้งเมื่อกด "ส่งอีเมลติดต่อ") -->
+    <!-- 2.1 ป๊อปอัปย่อย: สแกน QR Code LINE (เด้งเมื่อกดปุ่ม LINE) -->
+    <div id="line-popup" class="popup-overlay" style="z-index: 1100;">
+        <div class="popup-box line-modal-box">
+            <div class="email-modal-header">
+                <h2>💬 ติดต่อผ่าน LINE</h2>
+                <button id="close-line-x" class="close-x-btn">✖</button>
+            </div>
+            
+            <p class="email-desc" style="text-align: center;">สแกน QR Code ด้านล่างเพื่อเพิ่มเพื่อนได้เลยค่ะ</p>
+
+            <!-- กรอบแสดงรูป QR Code LINE -->
+            <div class="qr-image-container">
+                <img src="images/line-qr.jpg" alt="LINE QR Code" class="line-qr-img">
+            </div>
+
+            <!-- กล่องแสดง LINE ID + ปุ่มคัดลอก -->
+            <div class="email-copy-box">
+                <span>ID: <strong id="line-id-text">aieou_mo</strong></span>
+                <button id="copy-line-btn" class="copy-btn">คัดลอก ID</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 ป๊อปอัปย่อย: ติดต่อทางอีเมล (เด้งเมื่อกด "ส่งอีเมลติดต่อ") -->
     <div id="email-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box email-modal-box">
             <div class="email-modal-header">
@@ -127,8 +137,8 @@
     <div id="edu-popup" class="popup-overlay">
         <div class="popup-box">
             <h2>🎓 การศึกษา</h2>
-            <p><strong>สถานะ:</strong> กำลังศึกษาและพัฒนาทักษะด้าน Web Development</p>
-            <p><strong>ความสนใจ:</strong> การสร้างเว็บไซต์สไตล์เรโทรและเทคโนโลยีปัญญาประดิษฐ์</p>
+            <p><strong>สถานะ:</strong> มหาวิทยาลัยกรุงเทพ (Bangkok University)ปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิชาวิศวกรรมปัญญาประดิษฐ์และวิทยาการข้อมูล (AI Engineering and Data Science)เเละกำลังศึกษาและพัฒนาทักษะด้าน Web Development</p>
+            <p><strong>ความสนใจ:</strong> การสร้างเว็บไซต์สไตล์เรโทร(ย้อนยุค)และเทคโนโลยีปัญญาประดิษฐ์</p>
             <button id="close-edu" class="pixel-btn btn-edu">CLOSE</button>
         </div>
     </div>
@@ -137,8 +147,8 @@
     <div id="skills-popup" class="popup-overlay">
         <div class="popup-box">
             <h2>⚡ ทักษะความสามารถ</h2>
-            <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript</p>
-            <p><strong>Tools:</strong> VS Code, Git & GitHub Pages</p>
+            <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript, SQL</p>
+            <p><strong>Tools:</strong> VS Code, Git & GitHub Pages, colab</p>
             <button id="close-skills" class="pixel-btn btn-skills">CLOSE</button>
         </div>
     </div>
@@ -147,7 +157,7 @@
     <div id="projects-popup" class="popup-overlay">
         <div class="popup-box">
             <h2>📁 ผลงานที่ผ่านมา</h2>
-            <p><strong>Pixel Adventure Portfolio:</strong> เว็บพอร์ตฟิโอเกม 8-Bit สุดเท่ที่สร้างขึ้นจากศูนย์</p>
+            <p><strong>Pixel Adventure Portfolio:</strong> เว็บPortfolio 8-Bit สุดเท่!!!!</p>
             <button id="close-projects" class="pixel-btn btn-projects">CLOSE</button>
         </div>
     </div>
@@ -155,12 +165,12 @@
     <!-- 6. ป๊อปอัป แชทกับเลขา (Interactive Chat ตัวใหม่ตัวเดียว) -->
     <div id="chat-popup" class="popup-overlay">
         <div class="popup-box chat-box-container">
-            <h2>💬 แชทกับเลขาฯ ส่วนตัว</h2>
+            <h2>💬 แชทกับอัสวิน ส่วนตัว</h2>
             
             <!-- หน้าต่างแสดงประวัติการสนทนา -->
             <div id="chat-messages" class="chat-messages">
                 <div class="chat-msg bot-msg">
-                    <strong>เลขาฯ:</strong> สวัสดีค่ะคุณผู้กล้า! เลือกหัวข้อคำถามด้านล่างเพื่อพูดคุยกับฉันได้เลยนะคะ ✨
+                    <strong>อัสวิน:</strong> สวัสดีค่ะคุณผู้กล้า! เลือกหัวข้อคำถามด้านล่างเพื่อพูดคุยกับฉันได้เลยนะคะ ✨
                 </div>
             </div>
 

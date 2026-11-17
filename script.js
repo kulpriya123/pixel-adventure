@@ -144,7 +144,7 @@ const qaDatabase = {
     },
     contact: {
         q: "ช่องทางการติดต่อมีอะไรบ้าง?",
-        a: "สามารถติดต่อผ่าน GitHub (kulpriya123) หรือติดตามโปรเจกต์อื่นๆ ได้เลยนะคะ ยินดีต้อนรับค่ะ!"
+        a: "สามารถติดต่อผ่าน Email, line,  หรือติดตามGitHub (kulpriya123)โปรเจกต์อื่นๆ ได้เลยนะคะ ยินดีต้อนรับค่ะ!"
     }
 };
 
@@ -279,3 +279,45 @@ if (copyEmailBtn && emailAddressText) {
     });
 }
 
+// ==========================================
+// 9. ระบบป๊อปอัปสแกน QR Code LINE & ปุ่มคัดลอก LINE ID
+// ==========================================
+const openLineModalBtn = document.getElementById('open-line-modal-btn'); // ปุ่ม "LINE" ในหน้า About Me
+const linePopup = document.getElementById('line-popup');                 // กล่องป๊อปอัป QR Code LINE
+const closeLineX = document.getElementById('close-line-x');              // ปุ่มกากบาท (✖) ปิดหน้าต่าง LINE
+const copyLineBtn = document.getElementById('copy-line-btn');            // ปุ่ม "คัดลอก ID"
+const lineIdText = document.getElementById('line-id-text');              // ข้อความ LINE ID
+
+// ควบคุมการเปิด-ปิดป๊อปอัป LINE
+if (openLineModalBtn && linePopup && closeLineX) {
+    openLineModalBtn.addEventListener('click', () => {
+        linePopup.style.display = 'flex';
+    });
+
+    closeLineX.addEventListener('click', () => {
+        linePopup.style.display = 'none';
+    });
+
+    linePopup.addEventListener('click', (e) => {
+        if (e.target === linePopup) {
+            linePopup.style.display = 'none';
+        }
+    });
+}
+
+// ระบบปุ่มกดคัดลอก LINE ID
+if (copyLineBtn && lineIdText) {
+    copyLineBtn.addEventListener('click', () => {
+        const idToCopy = lineIdText.textContent.trim();
+
+        navigator.clipboard.writeText(idToCopy).then(() => {
+            copyLineBtn.textContent = 'คัดลอกแล้ว! ✓';
+            copyLineBtn.style.backgroundColor = '#16a34a';
+
+            setTimeout(() => {
+                copyLineBtn.textContent = 'คัดลอก ID';
+                copyLineBtn.style.backgroundColor = '';
+            }, 2000);
+        });
+    });
+}
