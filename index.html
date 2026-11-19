@@ -12,8 +12,6 @@
 
     <div class="game-screen">
         <!-- แถบสถานะด้านบนสไตล์เกม RPG -->
-        <!-- แถบสถานะด้านบนสไตล์เกม RPG (เพิ่ม id เพื่ออัปเดตค่าได้จริง) -->
-        <!-- แถบสถานะด้านบนสไตล์เกม RPG (เพิ่มปุ่มสลับธีมกลางวัน/กลางคืน) -->
         <header class="hud">
             <span>HP: ██████████ 100/100</span>
             <span id="hud-level">LV. 01</span>
@@ -33,8 +31,6 @@
 
             <!-- กล่องข้อความต้อนรับ (จะถูกพิมพ์อัตโนมัติด้วย JS) -->
             <p id="typewriter-text" class="story-text"></p>
-                 <br>
-            </p>
 
             <!-- ปุ่มกดสไตล์เกม (ตกแต่งสีครบเซต) -->
             <div class="menu-buttons">
@@ -58,8 +54,8 @@
         </div>
     </div>
 
-    <!-- 2. ป๊อปอัป ABOUT ME & CONTACT -->
-    <div id="about-popup" class="popup-overlay">
+    <!-- 2. ป๊อปอัป ABOUT ME & CONTACT (z-index 1100 ให้อยู่เหนือหน้าต่างเกม 1050) -->
+    <div id="about-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box about-box-wide">
             <h2>★ ABOUT ME & CONTACT</h2>
             <p><strong>ชื่อ:</strong> Kulpriya Wagayabun</p>
@@ -68,7 +64,7 @@
             <hr class="pixel-divider">
             <p style="margin-bottom: 10px;"><strong>ช่องทางการติดต่อ:</strong></p>
 
-            <!-- ปุ่มติดต่อหลัก: Email และ LINE (เปลี่ยนเป็นปุ่มเปิดป๊อปอัปสแกน QR) -->
+            <!-- ปุ่มติดต่อหลัก: Email และ LINE -->
             <div class="contact-row-main">
                 <button id="open-email-modal-btn" class="contact-btn btn-email-trigger">
                     ✉️ ส่งอีเมลติดต่อ
@@ -82,8 +78,8 @@
         </div>
     </div>
 
-    <!-- 2.1 ป๊อปอัปย่อย: สแกน QR Code LINE (เด้งเมื่อกดปุ่ม LINE) -->
-    <div id="line-popup" class="popup-overlay" style="z-index: 1100;">
+    <!-- 2.1 ป๊อปอัปย่อย: สแกน QR Code LINE -->
+    <div id="line-popup" class="popup-overlay" style="z-index: 1200;">
         <div class="popup-box line-modal-box">
             <div class="email-modal-header">
                 <h2>💬 ติดต่อผ่าน LINE</h2>
@@ -105,8 +101,8 @@
         </div>
     </div>
 
-    <!-- 2.2 ป๊อปอัปย่อย: ติดต่อทางอีเมล (เด้งเมื่อกด "ส่งอีเมลติดต่อ") -->
-    <div id="email-popup" class="popup-overlay" style="z-index: 1100;">
+    <!-- 2.2 ป๊อปอัปย่อย: ติดต่อทางอีเมล -->
+    <div id="email-popup" class="popup-overlay" style="z-index: 1200;">
         <div class="popup-box email-modal-box">
             <div class="email-modal-header">
                 <h2>✉️ ติดต่อทางอีเมล</h2>
@@ -134,43 +130,51 @@
     </div>
 
     <!-- 3. ป๊อปอัป การศึกษา -->
-    <div id="edu-popup" class="popup-overlay">
+    <div id="edu-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box">
             <h2>🎓 การศึกษา</h2>
-            <p><strong>สถานะ:</strong> มหาวิทยาลัยกรุงเทพ (Bangkok University)ปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิชาวิศวกรรมปัญญาประดิษฐ์และวิทยาการข้อมูล (AI Engineering and Data Science)เเละกำลังศึกษาและพัฒนาทักษะด้าน Web Development</p>
-            <p><strong>ความสนใจ:</strong> การสร้างเว็บไซต์สไตล์เรโทร(ย้อนยุค)และเทคโนโลยีปัญญาประดิษฐ์</p>
+            <p><strong>สถานะ:</strong> มหาวิทยาลัยกรุงเทพ (Bangkok University) ปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิชาวิศวกรรมปัญญาประดิษฐ์และวิทยาการข้อมูล (AI Engineering and Data Science) และกำลังศึกษาและพัฒนาทักษะด้าน Web Development</p>
+            <p><strong>ความสนใจ:</strong> การสร้างเว็บไซต์สไตล์เรโทร (ย้อนยุค) และเทคโนโลยีปัญญาประดิษฐ์</p>
             <button id="close-edu" class="pixel-btn btn-edu">CLOSE</button>
         </div>
     </div>
 
     <!-- 4. ป๊อปอัป ทักษะ -->
-    <div id="skills-popup" class="popup-overlay">
+    <div id="skills-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box">
             <h2>⚡ ทักษะความสามารถ</h2>
             <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript, SQL</p>
-            <p><strong>Tools:</strong> VS Code, Git & GitHub Pages, colab</p>
+            <p><strong>Tools:</strong> VS Code, Git & GitHub Pages, Colab</p>
             <button id="close-skills" class="pixel-btn btn-skills">CLOSE</button>
         </div>
     </div>
 
     <!-- 5. ป๊อปอัป ผลงาน -->
-    <div id="projects-popup" class="popup-overlay">
+    <div id="projects-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box">
             <h2>📁 ผลงานที่ผ่านมา</h2>
-            <p><strong>Pixel Adventure Portfolio:</strong> เว็บPortfolio 8-Bit สุดเท่!!!!</p>
+            <p><strong>Pixel Adventure Portfolio:</strong> เว็บ Portfolio 8-Bit สุดเท่!!!!</p>
+
+            <!-- ปุ่มดู GitHub (เปลี่ยน href เป็นลิงก์ GitHub ของคุณได้เลย) -->
+            <div style="margin-bottom: 16px;">
+                <a href="https://github.com/kulpriya123" target="_blank" rel="noopener noreferrer" class="contact-btn btn-github">
+                    🐙 ดูบน GitHub
+                </a>
+            </div>
+
             <button id="close-projects" class="pixel-btn btn-projects">CLOSE</button>
         </div>
     </div>
 
-    <!-- 6. ป๊อปอัป แชทกับเลขา (Interactive Chat ตัวใหม่ตัวเดียว) -->
-    <div id="chat-popup" class="popup-overlay">
+    <!-- 6. ป๊อปอัป แชทกับอัศวิน (z-index 1100 ให้อยู่เหนือหน้าต่างเกม 1050) -->
+    <div id="chat-popup" class="popup-overlay" style="z-index: 1100;">
         <div class="popup-box chat-box-container">
-            <h2>💬 แชทกับอัสวิน ส่วนตัว</h2>
+            <h2>💬 แชทกับอัศวิน ส่วนตัว</h2>
             
             <!-- หน้าต่างแสดงประวัติการสนทนา -->
             <div id="chat-messages" class="chat-messages">
                 <div class="chat-msg bot-msg">
-                    <strong>อัสวิน:</strong> สวัสดีค่ะคุณผู้กล้า! เลือกหัวข้อคำถามด้านล่างเพื่อพูดคุยกับฉันได้เลยนะคะ ✨
+                    <strong>อัศวิน:</strong> สวัสดีค่ะคุณผู้กล้า! เลือกหัวข้อคำถามด้านล่างเพื่อพูดคุยกับฉันได้เลยนะคะ ✨
                 </div>
             </div>
 
@@ -182,6 +186,111 @@
             </div>
 
             <button id="close-chat" class="pixel-btn btn-chat" style="display: block; margin: 10px auto 0;">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัปโหมดเกม: แผนที่เดินสำรวจครบทุกจุด -->
+    <div id="game-map-popup" class="popup-overlay" style="z-index: 1050;">
+        <div class="popup-box game-map-modal-box">
+            <div class="email-modal-header">
+                <h2>🎮 PIXEL WORLD EXPLORER</h2>
+                <button id="close-game-map-x" class="close-x-btn">✖</button>
+            </div>
+
+            <div id="rpg-map-stage" class="rpg-map-stage">
+                <div class="map-hint">ใช้ WASD / ลูกศร หรือคลิกบนฉาก เพื่อเดินสำรวจแต่ละจุด</div>
+                <div id="map-progress-badge" class="map-progress-badge">📍 จุดที่สำรวจ: 0 / 5</div>
+
+                <!-- 1. อาคารกิลด์ (ABOUT ME) -->
+                <div id="guild-building" class="guild-building" title="ABOUT ME & CONTACT">
+                    <div class="guild-roof">🏰 GUILD HALL</div>
+                    <div class="guild-door">🚪</div>
+                </div>
+
+                <!-- 2. สถาบันฝึกวิชา (การศึกษา) -->
+                <div id="edu-spot" class="map-spot spot-edu" title="การศึกษา">
+                    <div class="spot-icon">🎓</div>
+                    <span class="npc-tag tag-edu">การศึกษา</span>
+                </div>
+
+                <!-- 3. ลานฝึกทักษะ (ทักษะ) -->
+                <div id="skills-spot" class="map-spot spot-skills" title="ทักษะ">
+                    <div class="spot-icon">⚡</div>
+                    <span class="npc-tag tag-skills">ทักษะ</span>
+                </div>
+
+                <!-- 4. หอเกียรติยศ (ผลงาน) -->
+                <div id="projects-spot" class="map-spot spot-projects" title="ผลงาน">
+                    <div class="spot-icon">📁</div>
+                    <span class="npc-tag tag-projects">ผลงาน</span>
+                </div>
+
+                <!-- 5. ตัวอัศวิน (แชทกับอัศวิน) -->
+                <div id="knight-npc" class="knight-npc" title="แชทกับอัศวิน">
+                    <div class="knight-sprite">🛡️</div>
+                    <span class="npc-tag">อัศวิน</span>
+                </div>
+
+                <!-- ตัวละครผู้เล่น (เริ่มตรงกลางสนามหญ้า) -->
+                <div id="player-sprite" class="player-sprite">
+                    <img src="images/Cat-Memes-30.jpg" alt="Player" class="player-img">
+                    <span class="player-tag">YOU</span>
+                </div>
+
+                <!-- มอนสเตอร์วิ่งไล่ผู้เล่น (อยู่ข้างใน #rpg-map-stage) -->
+                <div id="chase-monster" class="chase-monster" title="ระวังโดนจับ!">
+                    <div class="monster-sprite">👾</div>
+                    <span class="monster-tag">MONSTER</span>
+                </div>
+            </div>
+
+            <div class="game-map-footer">
+                <button id="close-game-map-btn" class="pixel-btn btn-start">กลับหน้าหลัก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัป GAME OVER (แสดงเมื่อโดนมอนสเตอร์จับได้) -->
+    <div id="gameover-popup" class="popup-overlay" style="z-index: 1200;">
+        <div class="popup-box gameover-modal-box">
+            <h2>💀 GAME OVER</h2>
+            <p class="gameover-subtext">คุณโดนมอนสเตอร์จับได้กลางสนามหญ้า!</p>
+
+            <!-- ภาพประกอบตอนโดนจับ -->
+            <div class="gameover-img-frame">
+                <img src="images/Cat-Memes-30.jpg" alt="Caught by Monster" class="gameover-img">
+            </div>
+
+            <div class="gameover-actions">
+                <button id="retry-game-btn" class="pixel-btn btn-start">↻ เล่นใหม่อีกครั้ง</button>
+                <button id="gameover-home-btn" class="pixel-btn btn-about">กลับหน้าหลัก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ป๊อปอัปรางวัลเมื่อเดินครบทั้ง 5 จุดโดยไม่โดนจับ -->
+    <div id="victory-popup" class="popup-overlay" style="z-index: 1200;">
+        <div class="popup-box victory-modal-box">
+            <h2>🏆 QUEST CLEAR!</h2>
+            <p id="victory-reward-text" class="victory-subtext">
+                สุดยอดมาก! คุณสำรวจครบทั้ง 5 จุดโดยไม่โดนมอนสเตอร์จับได้!
+            </p>
+
+            <!-- ภาพประกอบตอนชนะภารกิจ (เปลี่ยน src เป็นรูปที่คุณเตรียมไว้ในโฟลเดอร์ images/ ได้เลย) -->
+            <div class="victory-img-frame">
+                <img src="images/im_1.jpg" alt="Quest Clear Victory" class="victory-img">
+            </div>
+
+            <div class="victory-badge-box">
+                <div class="victory-icon">👑</div>
+                <div class="victory-item-name">คทาผู้พิทักษ์แห่งพิกเซล</div>
+                <div class="victory-gold-bonus">+1,000G โบนัสผู้กล้า!</div>
+            </div>
+
+            <div class="gameover-actions">
+                <button id="play-again-victory-btn" class="pixel-btn btn-start">↻ เล่นอีกรอบ</button>
+                <button id="victory-home-btn" class="pixel-btn btn-about">กลับหน้าหลัก</button>
+            </div>
         </div>
     </div>
 

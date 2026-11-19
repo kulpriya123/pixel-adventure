@@ -621,3 +621,420 @@ body.day-mode .email-action-btn:hover {
     object-fit: contain;
     display: block;
 }
+
+/* ==========================================
+   หน้าต่างโหมดเกมแผนที่ & ตัวอัศวิน (Knight NPC)
+   ========================================== */
+.game-map-modal-box {
+    width: 92%;
+    max-width: 720px;
+}
+
+.rpg-map-stage {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    margin: 12px 0;
+    background-color: #4ade80;
+    background-image:
+        radial-gradient(#22c55e 2px, transparent 2px),
+        radial-gradient(#86efac 2px, #4ade80 2px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    border: 4px solid #1e293b;
+    box-shadow: inset 0 0 0 4px #15803d, 4px 4px 0px #000;
+    overflow: hidden;
+    cursor: crosshair;
+    user-select: none;
+}
+
+.map-hint {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #fde047;
+    font-size: 9px;
+    padding: 4px 8px;
+    border: 2px solid #fff;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* อาคารกิลด์มุมขวาบน */
+.guild-building {
+    position: absolute;
+    top: 34px;
+    right: 32px;
+    width: 112px;
+    background-color: #fef3c7;
+    border: 4px solid #78350f;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    z-index: 2;
+}
+
+.guild-roof {
+    background-color: #dc2626;
+    color: #fff;
+    font-size: 8px;
+    padding: 6px 2px;
+    border-bottom: 4px solid #7f1d1d;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.guild-door {
+    font-size: 22px;
+    padding: 4px 0;
+    background-color: #92400e;
+    width: 34px;
+    margin: 4px auto 0 auto;
+    border-top: 3px solid #451a03;
+    border-left: 3px solid #451a03;
+    border-right: 3px solid #451a03;
+}
+
+/* ตัวอัศวินในแผนที่ */
+.knight-npc {
+    position: absolute;
+    bottom: 36px;
+    right: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@keyframes knightIdle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+}
+
+.knight-sprite {
+    font-size: 30px;
+    line-height: 1;
+    filter: drop-shadow(2px 3px 0px rgba(0, 0, 0, 0.5));
+    animation: knightIdle 1.2s ease-in-out infinite;
+}
+
+.npc-tag {
+    background: #1d4ed8;
+    color: #fff;
+    font-size: 7px;
+    padding: 2px 5px;
+    margin-top: 2px;
+    border: 1px solid #fff;
+    box-shadow: 1px 2px 0 #000;
+}
+
+/* ตัวละครผู้เล่น */
+.player-sprite {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.player-img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    border-radius: 6px;
+    box-shadow: 2px 3px 0px #000;
+    image-rendering: pixelated;
+}
+
+.player-tag {
+    background: #000;
+    color: #fff;
+    font-size: 7px;
+    padding: 1px 4px;
+    margin-top: -4px;
+    border: 1px solid #fff;
+}
+
+@keyframes pixelWalkBob {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.is-walking .player-img {
+    animation: pixelWalkBob 0.25s infinite;
+}
+
+.game-map-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+/* ======================================= */
+/* ==========================================
+   จุดหมายทั้ง 5 แห่งบนแผนที่เกม (Spots & NPCs)
+   ========================================== */
+.rpg-map-stage {
+    height: 300px;
+}
+
+.map-spot {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.spot-icon {
+    font-size: 28px;
+    line-height: 1;
+    filter: drop-shadow(2px 3px 0px rgba(0, 0, 0, 0.5));
+    animation: knightIdle 1.4s ease-in-out infinite;
+}
+
+.spot-edu {
+    top: 46px;
+    left: 36px;
+}
+
+.spot-skills {
+    top: 46px;
+    left: 46%;
+}
+
+.spot-projects {
+    bottom: 28px;
+    left: 44px;
+}
+
+.knight-npc {
+    bottom: 28px;
+    right: 48px;
+}
+
+.tag-edu {
+    background: #15803d;
+}
+
+.tag-skills {
+    background: #d97706;
+}
+
+.tag-projects {
+    background: #7e22ce;
+}
+
+/* ==========================================
+   ปรับสีหน้าต่างแผนที่เกมให้เข้ากับโหมดกลางวัน (Sunny Town)
+   ========================================== */
+body.day-mode .game-map-modal-box {
+    background-color: #fffbeb;
+    color: #1e293b;
+    border-color: #d97706;
+}
+
+body.day-mode .game-map-modal-box h2 {
+    color: #b45309;
+    text-shadow: none;
+}
+
+body.day-mode .close-x-btn {
+    color: #dc2626;
+}
+
+/* ==========================================
+   มอนสเตอร์วิ่งไล่ & หน้าต่าง GAME OVER
+   ========================================== */
+.chase-monster {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9;
+    pointer-events: none;
+}
+
+.monster-sprite {
+    font-size: 30px;
+    line-height: 1;
+    filter: drop-shadow(2px 3px 0px rgba(0, 0, 0, 0.55));
+    animation: pixelWalkBob 0.3s infinite;
+}
+
+.monster-tag {
+    background: #dc2626;
+    color: #fff;
+    font-size: 7px;
+    padding: 1px 5px;
+    margin-top: 2px;
+    border: 1px solid #fff;
+    box-shadow: 1px 2px 0 #000;
+}
+
+.gameover-modal-box {
+    max-width: 420px;
+}
+
+.gameover-subtext {
+    margin-bottom: 14px !important;
+}
+
+.gameover-img-frame {
+    display: inline-block;
+    border: 4px solid #ef4444;
+    padding: 4px;
+    background-color: #18181b;
+    box-shadow: 4px 4px 0px #000;
+    margin-bottom: 18px;
+}
+
+.gameover-img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.gameover-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+body.day-mode .gameover-modal-box {
+    background-color: #fffbeb;
+    color: #1e293b;
+    border-color: #dc2626;
+}
+
+body.day-mode .gameover-modal-box h2 {
+    color: #dc2626;
+    text-shadow: none;
+}
+
+/* ==========================================
+   กล่องรางวัลเมื่อเดินครบ 5 จุดโดยไม่โดนจับ (QUEST CLEAR)
+   ========================================== */
+.victory-modal-box {
+    max-width: 430px;
+}
+
+.victory-subtext {
+    margin-bottom: 14px !important;
+}
+
+.victory-badge-box {
+    background-color: #1e293b;
+    border: 3px solid #ffcd75;
+    padding: 14px;
+    margin-bottom: 18px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.victory-icon {
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.victory-item-name {
+    color: #ffcd75;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.victory-gold-bonus {
+    color: #4ade80;
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    margin-top: 4px;
+}
+
+body.day-mode .victory-modal-box {
+    background-color: #fffbeb;
+    color: #1e293b;
+    border-color: #d97706;
+}
+
+body.day-mode .victory-modal-box h2 {
+    color: #b45309;
+    text-shadow: none;
+}
+
+body.day-mode .victory-badge-box {
+    background-color: #fef3c7;
+    border-color: #d97706;
+    box-shadow: 4px 4px 0px rgba(180, 83, 9, 0.25);
+}
+
+body.day-mode .victory-item-name {
+    color: #b45309;
+}
+
+body.day-mode .victory-gold-bonus {
+    color: #15803d;
+}
+
+/* ==========================================
+   กรอบรูปภาพประกอบหน้าชนะภารกิจ (QUEST CLEAR)
+   ========================================== */
+.victory-img-frame {
+    display: inline-block;
+    border: 4px solid #ffcd75;
+    padding: 4px;
+    background-color: #18181b;
+    box-shadow: 4px 4px 0px #000;
+    margin-bottom: 14px;
+}
+
+.victory-img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+}
+
+body.day-mode .victory-img-frame {
+    border-color: #d97706;
+    background-color: #fef3c7;
+    box-shadow: 4px 4px 0px rgba(180, 83, 9, 0.25);
+}
+
+/* ==========================================
+   ป้ายบอกจำนวนจุดที่สำรวจแล้วบนแผนที่
+   ========================================== */
+.map-progress-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(15, 23, 42, 0.9);
+    color: #4ade80;
+    font-size: 9px;
+    padding: 4px 8px;
+    border: 2px solid #fff;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.map-progress-badge.is-complete {
+    color: #ffcd75;
+    border-color: #ffcd75;
+}
+
+/* ปรับสีปุ่ม GitHub ในโหมดกลางวัน (body.day-mode)  */
+body.day-mode #projects-popup .btn-github {
+    background-color: #1c902d;
+    color: #ffffff;
+    border-color: #d97706;
+}

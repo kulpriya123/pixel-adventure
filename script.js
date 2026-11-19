@@ -321,3 +321,431 @@ if (copyLineBtn && lineIdText) {
         });
     });
 }
+
+// ==========================================
+// 10. โหมดแผนที่ในปุ่ม START GAME + เดินครบ 5 จุดรับรางวัลโดยไม่โดนจับ + มอนสเตอร์ไล่ & GAME OVER
+// ==========================================
+const gameMapPopup = document.getElementById('game-map-popup');       // ดึงกล่องป๊อปอัปหน้าต่างเกมทั้งหมด
+const closeGameMapX = document.getElementById('close-game-map-x');     // ดึงปุ่มกากบาท (✖) ปิดหน้าต่างเกม
+const closeGameMapBtn = document.getElementById('close-game-map-btn'); // ดึงปุ่ม "กลับหน้าหลัก"
+const mapStage = document.getElementById('rpg-map-stage');             // ดึงพื้นที่ฉากสนามหญ้าที่ให้เดินได้
+const playerSprite = document.getElementById('player-sprite');         // ดึงตัวละครผู้เล่น (YOU)
+const chaseMonster = document.getElementById('chase-monster');         // ดึงตัวมอนสเตอร์ที่วิ่งไล่ตามผู้เล่น
+const mapProgressBadge = document.getElementById('map-progress-badge'); // ดึงป้ายบอกจำนวนจุดที่สำรวจแล้วในรอบนี้
+
+const gameoverPopup = document.getElementById('gameover-popup');       // ดึงกล่องป๊อปอัป GAME OVER
+const retryGameBtn = document.getElementById('retry-game-btn');        // ดึงปุ่ม "เล่นใหม่อีกครั้ง"
+const gameoverHomeBtn = document.getElementById('gameover-home-btn');  // ดึงปุ่ม "กลับหน้าหลัก" ในหน้า GAME OVER
+
+const victoryPopup = document.getElementById('victory-popup');         // ดึงกล่องป๊อปอัปรางวัลชนะภารกิจ (QUEST CLEAR)
+const playAgainVictoryBtn = document.getElementById('play-again-victory-btn'); // ดึงปุ่ม "เล่นอีกรอบ" ในหน้าชนะ
+const victoryHomeBtn = document.getElementById('victory-home-btn');    // ดึงปุ่ม "กลับหน้าหลัก" ในหน้าชนะ
+
+// รายการจุดหมายทั้ง 5 แห่งบนแผนที่ พร้อมป๊อปอัปและรหัสเมนูสำหรับสะสมแต้มเลเวล
+const mapZones = [
+    {
+        el: document.getElementById('guild-building'), // จุดที่ 1: อาคารกิลด์
+        popup: document.getElementById('about-popup'), // เปิดป๊อปอัป ABOUT ME & CONTACT
+        menuKey: 'about-btn',                          // รหัสเมนูสำหรับนับแต้มเลเวลรวม
+        padding: 8,                                    // ระยะเผื่อขอบเขตการชน
+        inside: false                                  // สถานะว่ากำลังยืนอยู่ในโซนนี้ไหม
+    },
+    {
+        el: document.getElementById('edu-spot'),       // จุดที่ 2: การศึกษา
+        popup: document.getElementById('edu-popup'),   // เปิดป๊อปอัปการศึกษา
+        menuKey: 'edu-btn',                            // รหัสเมนูการศึกษา
+        padding: 6,                                    // ระยะเผื่อขอบเขตการชน
+        inside: false                                  // สถานะการอยู่ในโซน
+    },
+    {
+        el: document.getElementById('skills-spot'),    // จุดที่ 3: ทักษะ
+        popup: document.getElementById('skills-popup'),// เปิดป๊อปอัปทักษะ
+        menuKey: 'skills-btn',                         // รหัสเมนูทักษะ
+        padding: 6,                                    // ระยะเผื่อขอบเขตการชน
+        inside: false                                  // สถานะการอยู่ในโซน
+    },
+    {
+        el: document.getElementById('projects-spot'),  // จุดที่ 4: ผลงาน
+        popup: document.getElementById('projects-popup'),// เปิดป๊อปอัปผลงาน
+        menuKey: 'projects-btn',                       // รหัสเมนูผลงาน
+        padding: 6,                                    // ระยะเผื่อขอบเขตการชน
+        inside: false                                  // สถานะการอยู่ในโซน
+    },
+    {
+        el: document.getElementById('knight-npc'),     // จุดที่ 5: ตัวอัศวิน
+        popup: document.getElementById('chat-popup'),  // เปิดป๊อปอัปแชทกับอัศวิน
+        menuKey: 'chat-btn',                           // รหัสเมนูแชท
+        padding: 6,                                    // ระยะเผื่อขอบเขตการชน
+        inside: false                                  // สถานะการอยู่ในโซน
+    }
+];
+
+// ค้นหาปุ่ม START GAME (รองรับทั้งแบบมี id และแบบหาจากข้อความบนปุ่ม)
+const startGameBtn =
+    document.getElementById('start-game-btn') ||
+    Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('START GAME'));
+
+let playerX = 300;          // ตำแหน่งแกน X (แนวนอน) ของตัวละครผู้เล่น
+let playerY = 140;          // ตำแหน่งแกน Y (แนวตั้ง) ของตัวละครผู้เล่น
+let monsterX = 40;          // ตำแหน่งแกน X เริ่มต้นของมอนสเตอร์
+let monsterY = 40;          // ตำแหน่งแกน Y เริ่มต้นของมอนสเตอร์
+
+const moveSpeed = 3.6;      // ความเร็วการเดินของผู้เล่นต่อ 1 เฟรม
+const monsterSpeed = 2.4;  // ความเร็ววิ่งไล่ของมอนสเตอร์ (ปรับเพิ่ม-ลดความยากได้ตรงนี้)
+const questBonusGold = 1000;// โบนัสเงินรางวัลเมื่อเดินครบทั้ง 5 จุดโดยไม่โดนจับ
+
+const keysPressed = {};                 // เก็บรายการปุ่มทิศทางที่กำลังกดค้างอยู่
+let targetPoint = null;                 // เก็บพิกัด { x, y } กรณีผู้เล่นคลิกจุดบนฉากให้เดินไปหา
+let isMapOpen = false;                  // ตัวบอกว่าตอนนี้หน้าต่างแผนที่เปิดอยู่หรือไม่
+let isGameOver = false;                 // ตัวบอกว่าผู้เล่นโดนมอนสเตอร์จับได้หรือยัง
+let isQuestCleared = false;             // ตัวบอกว่าในรอบนี้เดินครบทั้ง 5 จุดและรับรางวัลหรือยัง
+let pendingVictoryAfterPopup = false;   // รอเปิดหน้าต่างรางวัลหลังปิดป๊อปอัปจุดที่ 5
+
+const clearedZonesInRun = new Set();    // เก็บจุดที่เดินถึงแล้วใน "รอบปัจจุบัน" (ครบ 5 จุดเมื่อไหร่ได้รางวัล)
+
+// อัปเดตป้ายบอกจำนวนจุดที่เก็บได้แล้วในรอบปัจจุบัน (เช่น 📍 จุดที่สำรวจ: 2 / 5)
+function updateMapProgressUI() {
+    if (!mapProgressBadge) return;
+    const count = clearedZonesInRun.size;
+    const total = mapZones.length;
+    mapProgressBadge.textContent = `📍 จุดที่สำรวจ: ${count} / ${total}`;
+    if (count >= total) {
+        mapProgressBadge.classList.add('is-complete');
+    } else {
+        mapProgressBadge.classList.remove('is-complete');
+    }
+}
+
+// เช็กว่ามีป๊อปอัปข้อมูลของจุดต่างๆ เปิดอยู่ไหม (ถ้าเปิดอยู่ จะพักมอนสเตอร์ชั่วคราว)
+function isAnyInfoPopupOpen() {
+    return mapZones.some(zone => zone.popup && zone.popup.style.display === 'flex');
+}
+
+// เปิดหน้าต่างรางวัลชนะภารกิจ + บวกโบนัส Gold และอัปเดต HUD
+function showVictoryReward() {
+    if (isQuestCleared) return;
+    isQuestCleared = true;
+    targetPoint = null;
+    for (let k in keysPressed) delete keysPressed[k];
+    playerSprite.classList.remove('is-walking');
+
+    // บวกโบนัสเงินรางวัลเข้าตัวแปรหลัก currentGold และอัปเดตแถบสถานะด้านบน
+    if (typeof currentGold === 'number') {
+        currentGold += questBonusGold;
+        if (typeof updateHUD === 'function') {
+            updateHUD();
+        }
+    }
+
+    if (victoryPopup) {
+        victoryPopup.style.display = 'flex';
+    }
+}
+
+// ฟังก์ชันรีเซ็ตตำแหน่งผู้เล่น มอนสเตอร์ และตัวนับจุดสำรวจสำหรับรอบใหม่
+function resetPositionsAndState() {
+    if (!mapStage || !playerSprite) return;
+
+    // วางผู้เล่นไว้ตรงกลางฉาก
+    playerX = (mapStage.clientWidth - playerSprite.offsetWidth) / 2;
+    playerY = (mapStage.clientHeight - playerSprite.offsetHeight) / 2 + 15;
+
+    // วางมอนสเตอร์ไว้มุมซ้ายบน ห่างจากผู้เล่นตอนเริ่มเกม
+    monsterX = 24;
+    monsterY = 42;
+
+    targetPoint = null;              // ล้างจุดหมายจากการคลิกเมาส์
+    isGameOver = false;              // รีเซ็ตสถานะ GAME OVER
+    isQuestCleared = false;          // รีเซ็ตสถานะชนะภารกิจสำหรับรอบใหม่
+    pendingVictoryAfterPopup = false;// ล้างสถานะรอเปิดหน้ารางวัล
+    clearedZonesInRun.clear();       // ล้างรายชื่อจุดที่เก็บได้ในรอบก่อนหน้า เพื่อให้เริ่มนับ 1-5 ใหม่
+    updateMapProgressUI();           // รีเซ็ตป้ายบอกจำนวนจุดกลับเป็น 0 / 5
+
+    mapZones.forEach(zone => { zone.inside = false; }); // รีเซ็ตสถานะการยืนทับทุกโซน
+    for (let k in keysPressed) delete keysPressed[k]; // ล้างปุ่มค้าง
+
+    playerSprite.style.left = playerX + 'px'; // อัปเดตตำแหน่งซ้ายของผู้เล่น
+    playerSprite.style.top = playerY + 'px';  // อัปเดตตำแหน่งบนของผู้เล่น
+
+    if (chaseMonster) {
+        chaseMonster.style.left = monsterX + 'px'; // อัปเดตตำแหน่งซ้ายของมอนสเตอร์
+        chaseMonster.style.top = monsterY + 'px';  // อัปเดตตำแหน่งบนของมอนสเตอร์
+    }
+}
+
+// ฟังก์ชันเปิดหน้าต่างแผนที่เกม
+function openGameMap() {
+    if (!gameMapPopup) return;
+    if (gameoverPopup) gameoverPopup.style.display = 'none';
+    if (victoryPopup) victoryPopup.style.display = 'none';
+    gameMapPopup.style.display = 'flex';
+    isMapOpen = true;
+    requestAnimationFrame(() => resetPositionsAndState());
+}
+
+// ฟังก์ชันปิดหน้าต่างแผนที่เกมและกลับหน้าหลัก
+function closeGameMap() {
+    if (!gameMapPopup) return;
+    gameMapPopup.style.display = 'none';
+    if (gameoverPopup) gameoverPopup.style.display = 'none';
+    if (victoryPopup) victoryPopup.style.display = 'none';
+    isMapOpen = false;
+    isGameOver = false;
+    isQuestCleared = false;
+    pendingVictoryAfterPopup = false;
+    targetPoint = null;
+    for (let k in keysPressed) delete keysPressed[k];
+}
+
+// ฟังก์ชันเมื่อมอนสเตอร์จับผู้เล่นได้ก่อนครบ 5 จุด -> เข้าสู่หน้าต่าง GAME OVER
+function triggerGameOver() {
+    if (isGameOver || isQuestCleared) return;
+    isGameOver = true;
+    targetPoint = null;
+    for (let k in keysPressed) delete keysPressed[k];
+    playerSprite.classList.remove('is-walking');
+
+    if (gameoverPopup) {
+        gameoverPopup.style.display = 'flex';
+    }
+}
+
+// ผูกปุ่ม CLOSE ของป๊อปอัปทั้ง 5 จุด เพื่อเปิดหน้ารางวัลทันทีหากเพิ่งเก็บครบ 5 จุดในจุดนั้น
+mapZones.forEach(zone => {
+    if (!zone.popup) return;
+    const closeBtn = zone.popup.querySelector('button[id^="close-"]');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            if (pendingVictoryAfterPopup && !isQuestCleared) {
+                pendingVictoryAfterPopup = false;
+                showVictoryReward();
+            }
+        });
+    }
+    zone.popup.addEventListener('click', (e) => {
+        if (e.target === zone.popup && pendingVictoryAfterPopup && !isQuestCleared) {
+            pendingVictoryAfterPopup = false;
+            showVictoryReward();
+        }
+    });
+});
+
+// ดักจับการคลิกปุ่ม START GAME เพื่อเปิดหน้าต่างแผนที่
+if (startGameBtn) {
+    startGameBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openGameMap();
+    });
+}
+
+if (closeGameMapX) closeGameMapX.addEventListener('click', closeGameMap);
+if (closeGameMapBtn) closeGameMapBtn.addEventListener('click', closeGameMap);
+
+// ปุ่มเล่นใหม่ในหน้า GAME OVER
+if (retryGameBtn) {
+    retryGameBtn.addEventListener('click', () => {
+        if (gameoverPopup) gameoverPopup.style.display = 'none';
+        resetPositionsAndState();
+    });
+}
+
+// ปุ่มกลับหน้าหลักในหน้า GAME OVER
+if (gameoverHomeBtn) {
+    gameoverHomeBtn.addEventListener('click', closeGameMap);
+}
+
+// ปุ่มเล่นอีกรอบในหน้า QUEST CLEAR
+if (playAgainVictoryBtn) {
+    playAgainVictoryBtn.addEventListener('click', () => {
+        if (victoryPopup) victoryPopup.style.display = 'none';
+        resetPositionsAndState();
+    });
+}
+
+// ปุ่มกลับหน้าหลักในหน้า QUEST CLEAR
+if (victoryHomeBtn) {
+    victoryHomeBtn.addEventListener('click', closeGameMap);
+}
+
+// ถ้าคลิกพื้นที่สีดำด้านนอกกล่องแผนที่ ให้ปิดหน้าต่างแผนที่
+if (gameMapPopup) {
+    gameMapPopup.addEventListener('click', (e) => {
+        if (e.target === gameMapPopup) closeGameMap();
+    });
+}
+
+// เริ่มตั้งค่าระบบควบคุมการเดิน การวิ่งไล่ของมอนสเตอร์ และการตรวจจับการชน
+if (mapStage && playerSprite) {
+    playerSprite.style.left = playerX + 'px';
+    playerSprite.style.top = playerY + 'px';
+
+    // แปลงปุ่มกดจากคีย์บอร์ดให้เป็นทิศทาง 'up', 'down', 'left', 'right' (รองรับทั้งอังกฤษและไทย)
+    function getMoveDirectionKey(e) {
+        const key = e.key.toLowerCase();
+        const code = e.code;
+
+        if (key === 'w' || key === 'ไ' || code === 'KeyW' || key === 'arrowup' || code === 'ArrowUp') return 'up';
+        if (key === 's' || key === 'ห' || code === 'KeyS' || key === 'arrowdown' || code === 'ArrowDown') return 'down';
+        if (key === 'a' || key === 'ฟ' || code === 'KeyA' || key === 'arrowleft' || code === 'ArrowLeft') return 'left';
+        if (key === 'd' || key === 'ก' || code === 'KeyD' || key === 'arrowright' || code === 'ArrowRight') return 'right';
+
+        return null;
+    }
+
+    // เมื่อกดปุ่มคีย์บอร์ดลง
+    window.addEventListener('keydown', (e) => {
+        if (!isMapOpen || isGameOver || isQuestCleared) return;
+        const dir = getMoveDirectionKey(e);
+        if (dir) {
+            e.preventDefault();
+            keysPressed[dir] = true;
+            targetPoint = null;
+        }
+    });
+
+    // เมื่อปล่อยปุ่มคีย์บอร์ด
+    window.addEventListener('keyup', (e) => {
+        const dir = getMoveDirectionKey(e);
+        if (dir) delete keysPressed[dir];
+    });
+
+    // เมื่อคลิกหรือแตะบนฉากแผนที่ เพื่อสั่งให้ตัวละครเดินไปจุดนั้น
+    mapStage.addEventListener('click', (e) => {
+        if (!isMapOpen || isGameOver || isQuestCleared) return;
+        const rect = mapStage.getBoundingClientRect();
+        const clickX = e.clientX - rect.left - (playerSprite.offsetWidth / 2);
+        const clickY = e.clientY - rect.top - (playerSprite.offsetHeight / 2);
+        targetPoint = { x: clickX, y: clickY };
+    });
+
+    // ฟังก์ชันตรวจสอบว่ากล่ององค์ประกอบ elA และ elB ทับ/ชนกันหรือไม่
+    function isOverlapping(elA, elB, padding = 6) {
+        if (!elA || !elB) return false;
+        const a = elA.getBoundingClientRect();
+        const b = elB.getBoundingClientRect();
+        return !(
+            a.right < b.left + padding ||
+            a.left > b.right - padding ||
+            a.bottom < b.top + padding ||
+            a.top > b.bottom - padding
+        );
+    }
+
+    // ลูปหลักของเกม ทำงานต่อเนื่องทุกเฟรมหน้าจอ
+    function gameLoop() {
+        // ประมวลผลเฉพาะตอนเปิดแผนที่ ยังไม่ GAME OVER ยังไม่ชนะรอบนี้ และไม่มีป๊อปอัปข้อมูลเปิดทับอยู่
+        if (isMapOpen && !isGameOver && !isQuestCleared && !isAnyInfoPopupOpen()) {
+            let dx = 0;
+            let dy = 0;
+
+            // 1. คำนวณทิศทางจากการกดปุ่มคีย์บอร์ด
+            if (keysPressed['up']) dy -= moveSpeed;
+            if (keysPressed['down']) dy += moveSpeed;
+            if (keysPressed['left']) dx -= moveSpeed;
+            if (keysPressed['right']) dx += moveSpeed;
+
+            // 2. ถ้าไม่ได้กดปุ่มคีย์บอร์ด แต่มีเป้าหมายจากการคลิกบนฉาก ให้เดินเข้าหาเป้าหมาย
+            if (targetPoint && dx === 0 && dy === 0) {
+                const diffX = targetPoint.x - playerX;
+                const diffY = targetPoint.y - playerY;
+                const distance = Math.hypot(diffX, diffY);
+
+                if (distance > moveSpeed) {
+                    dx = (diffX / distance) * moveSpeed;
+                    dy = (diffY / distance) * moveSpeed;
+                } else {
+                    playerX = targetPoint.x;
+                    playerY = targetPoint.y;
+                    targetPoint = null;
+                }
+            }
+
+            const maxX = mapStage.clientWidth - playerSprite.offsetWidth;
+            const maxY = mapStage.clientHeight - playerSprite.offsetHeight;
+
+            // 3. อัปเดตตำแหน่งผู้เล่นเมื่อมีการเคลื่อนที่
+            if (dx !== 0 || dy !== 0) {
+                playerX += dx;
+                playerY += dy;
+
+                playerX = Math.max(4, Math.min(maxX - 4, playerX));
+                playerY = Math.max(28, Math.min(maxY - 4, playerY));
+
+                playerSprite.style.left = playerX + 'px';
+                playerSprite.style.top = playerY + 'px';
+                playerSprite.classList.add('is-walking');
+
+                const img = playerSprite.querySelector('.player-img');
+                if (img && dx !== 0) {
+                    img.style.transform = dx < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+                }
+            } else {
+                playerSprite.classList.remove('is-walking');
+            }
+
+            // 4. ขยับมอนสเตอร์วิ่งไล่ตามตำแหน่งผู้เล่น
+            if (chaseMonster) {
+                const mDiffX = playerX - monsterX;
+                const mDiffY = playerY - monsterY;
+                const mDist = Math.hypot(mDiffX, mDiffY);
+
+                if (mDist > 1) {
+                    monsterX += (mDiffX / mDist) * monsterSpeed;
+                    monsterY += (mDiffY / mDist) * monsterSpeed;
+
+                    const mMaxX = mapStage.clientWidth - chaseMonster.offsetWidth;
+                    const mMaxY = mapStage.clientHeight - chaseMonster.offsetHeight;
+                    monsterX = Math.max(4, Math.min(mMaxX - 4, monsterX));
+                    monsterY = Math.max(28, Math.min(mMaxY - 4, monsterY));
+
+                    chaseMonster.style.left = monsterX + 'px';
+                    chaseMonster.style.top = monsterY + 'px';
+                }
+
+                // ตรวจจับว่ามอนสเตอร์วิ่งมาจับผู้เล่นได้หรือยัง
+                if (isOverlapping(playerSprite, chaseMonster, 10)) {
+                    triggerGameOver();
+                }
+            }
+
+            // 5. ตรวจจับการเดินชนครบทั้ง 5 จุดบนแผนที่และเช็กเงื่อนไขรับรางวัล
+            if (!isGameOver && !isQuestCleared) {
+                mapZones.forEach(zone => {
+                    const isHit = isOverlapping(playerSprite, zone.el, zone.padding);
+                    if (isHit && !zone.inside) {
+                        zone.inside = true;
+                        targetPoint = null;
+                        for (let k in keysPressed) delete keysPressed[k];
+
+                        // บันทึกว่าเดินถึงจุดนี้แล้วในรอบปัจจุบัน และอัปเดตป้ายตัวเลขบนแผนที่
+                        if (zone.menuKey) {
+                            clearedZonesInRun.add(zone.menuKey);
+                            updateMapProgressUI();
+                            if (typeof checkMenuProgress === 'function') {
+                                checkMenuProgress(zone.menuKey);
+                            }
+                        }
+
+                        // ถ้าเดินครบทั้ง 5 จุดโดยยังไม่โดนจับ ให้ตั้งธงรอเปิดหน้าต่างรางวัลหลังปิดป๊อปอัปจุดนี้
+                        if (clearedZonesInRun.size === mapZones.length) {
+                            pendingVictoryAfterPopup = true;
+                        }
+
+                        if (zone.popup) {
+                            zone.popup.style.display = 'flex';
+                        } else if (pendingVictoryAfterPopup) {
+                            pendingVictoryAfterPopup = false;
+                            showVictoryReward();
+                        }
+                    } else if (!isHit) {
+                        zone.inside = false;
+                    }
+                });
+            }
+        }
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    requestAnimationFrame(gameLoop);
+}
